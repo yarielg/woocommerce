@@ -20,7 +20,7 @@ jQuery( function( $ ) {
 	});
 
 	// Prevent enter submitting post form.
-	$( '#upsell_product_data' ).bind( 'keypress', function( e ) {
+	$( '#upsell_product_data' ).on( 'keypress', function( e ) {
 		if ( e.keyCode === 13 ) {
 			return false;
 		}
@@ -35,7 +35,7 @@ jQuery( function( $ ) {
 
 	$( function() {
 		// Prevent inputs in meta box headings opening/closing contents.
-		$( '#woocommerce-product-data' ).find( '.hndle' ).unbind( 'click.postboxes' );
+		$( '#woocommerce-product-data' ).find( '.hndle' ).off( 'click.postboxes' );
 
 		$( '#woocommerce-product-data' ).on( 'click', '.hndle', function( event ) {
 
@@ -77,7 +77,7 @@ jQuery( function( $ ) {
 		var current_visibility = $( '#current_visibility' ).val();
 		var current_featured   = $( '#current_featured' ).val();
 
-		$( 'input[name=_visibility]' ).removeAttr( 'checked' );
+		$( 'input[name=_visibility]' )[0].removeAttribute( 'checked' );
 		$( 'input[name=_visibility][value=' + current_visibility + ']' ).attr( 'checked', 'checked' );
 
 		var label = $( 'input[name=_visibility]:checked' ).attr( 'data-label' );
@@ -86,7 +86,7 @@ jQuery( function( $ ) {
 			label = label + ', ' + woocommerce_admin_meta_boxes.featured_label;
 			$( 'input[name=_featured]' ).attr( 'checked', 'checked' );
 		} else {
-			$( 'input[name=_featured]' ).removeAttr( 'checked' );
+			$( 'input[name=_featured]' )[0].removeAttribute( 'checked' );
 		}
 
 		$( '#catalog-visibility-display' ).text( label );
@@ -94,32 +94,32 @@ jQuery( function( $ ) {
 	});
 
 	// Product type specific options.
-	$( 'select#product-type' ).change( function() {
+	$( 'select#product-type' ).on( 'change', function() {
 
 		// Get value.
 		var select_val = $( this ).val();
 
 		if ( 'variable' === select_val ) {
-			$( 'input#_manage_stock' ).change();
+			$( 'input#_manage_stock' ).trigger( 'change' );
 			$( 'input#_downloadable' ).prop( 'checked', false );
-			$( 'input#_virtual' ).removeAttr( 'checked' );
+			$( 'input#_virtual' )[0].removeAttribute( 'checked' );
 		} else if ( 'grouped' === select_val ) {
 			$( 'input#_downloadable' ).prop( 'checked', false );
-			$( 'input#_virtual' ).removeAttr( 'checked' );
+			$( 'input#_virtual' )[0].removeAttribute( 'checked' );
 		} else if ( 'external' === select_val ) {
 			$( 'input#_downloadable' ).prop( 'checked', false );
-			$( 'input#_virtual' ).removeAttr( 'checked' );
+			$( 'input#_virtual' )[0].removeAttribute( 'checked' );
 		}
 
 		show_and_hide_panels();
 
-		$( 'ul.wc-tabs li:visible' ).eq( 0 ).find( 'a' ).click();
+		$( 'ul.wc-tabs li:visible' ).eq( 0 ).find( 'a' ).trigger( 'click' );
 
 		$( document.body ).trigger( 'woocommerce-product-type-change', select_val, $( this ) );
 
-	}).change();
+	}).trigger( 'change' );
 
-	$( 'input#_downloadable, input#_virtual' ).change( function() {
+	$( 'input#_downloadable, input#_virtual' ).on( 'change', function() {
 		show_and_hide_panels();
 	});
 
@@ -165,7 +165,7 @@ jQuery( function( $ ) {
 
 		$( '.hide_if_' + product_type ).hide();
 
-		$( 'input#_manage_stock' ).change();
+		$( 'input#_manage_stock' ).trigger( 'change' );
 
 		// Hide empty panels/tabs after display.
 		$( '.woocommerce_options_panel' ).each( function() {
@@ -239,7 +239,7 @@ jQuery( function( $ ) {
 	});
 
 	// Stock options.
-	$( 'input#_manage_stock' ).change( function() {
+	$( 'input#_manage_stock' ).on( 'change', function() {
 		if ( $( this ).is( ':checked' ) ) {
 			$( 'div.stock_fields' ).show();
 			$( 'p.stock_status_field' ).hide();
@@ -250,8 +250,8 @@ jQuery( function( $ ) {
 			$( 'p.stock_status_field:not( .hide_if_' + product_type + ' )' ).show();
 		}
 
-		$( 'input.variable_manage_stock' ).change();
-	}).change();
+		$( 'input.variable_manage_stock' ).trigger( 'change' );
+	}).trigger( 'change' );
 
 	// Date picker fields.
 	function date_picker_select( datepicker ) {
@@ -260,7 +260,7 @@ jQuery( function( $ ) {
 			date           = $( datepicker ).datepicker( 'getDate' );
 
 		$( otherDateField ).datepicker( 'option', option, date );
-		$( datepicker ).change();
+		$( datepicker ).trigger( 'change' );
 	}
 
 	$( '.sale_price_dates_fields' ).each( function() {
@@ -335,7 +335,7 @@ jQuery( function( $ ) {
 
 			attribute_row_indexes();
 
-			$attributes.find( '.woocommerce_attribute' ).last().find( 'h3' ).click();
+			$attributes.find( '.woocommerce_attribute' ).last().find( 'h3' ).trigger( 'click' );
 
 			$wrapper.unblock();
 
@@ -356,13 +356,13 @@ jQuery( function( $ ) {
 
 	$( '.product_attributes' ).on( 'click', 'button.select_all_attributes', function() {
 		$( this ).closest( 'td' ).find( 'select option' ).prop( 'selected', 'selected' );
-		$( this ).closest( 'td' ).find( 'select' ).change();
+		$( this ).closest( 'td' ).find( 'select' ).trigger( 'change' );
 		return false;
 	});
 
 	$( '.product_attributes' ).on( 'click', 'button.select_no_attributes', function() {
-		$( this ).closest( 'td' ).find( 'select option' ).removeAttr( 'selected' );
-		$( this ).closest( 'td' ).find( 'select' ).change();
+		$( this ).closest( 'td' ).find( 'select option' )[0].removeAttribute( 'selected' );
+		$( this ).closest( 'td' ).find( 'select' ).trigger( 'change' );
 		return false;
 	});
 
@@ -373,7 +373,7 @@ jQuery( function( $ ) {
 			if ( $parent.is( '.taxonomy' ) ) {
 				$parent.find( 'select, input[type=text]' ).val( '' );
 				$parent.hide();
-				$( 'select.attribute_taxonomy' ).find( 'option[value="' + $parent.data( 'taxonomy' ) + '"]' ).removeAttr( 'disabled' );
+				$( 'select.attribute_taxonomy' ).find( 'option[value="' + $parent.data( 'taxonomy' ) + '"]' )[0].removeAttribute( 'disabled' );
 			} else {
 				$parent.find( 'select, input[type=text]' ).val( '' );
 				$parent.hide();
@@ -398,7 +398,7 @@ jQuery( function( $ ) {
 			ui.item.css( 'background-color', '#f6f6f6' );
 		},
 		stop: function( event, ui ) {
-			ui.item.removeAttr( 'style' );
+			ui.item[0].removeAttribute( 'style' );
 			attribute_row_indexes();
 		}
 	});
@@ -436,7 +436,7 @@ jQuery( function( $ ) {
 					// Success.
 					$wrapper.find( 'select.attribute_values' )
 						.append( '<option value="' + response.term_id + '" selected="selected">' + response.name + '</option>' );
-					$wrapper.find( 'select.attribute_values' ).change();
+					$wrapper.find( 'select.attribute_values' ).trigger( 'change' );
 				}
 
 				$( '.product_attributes' ).unblock();
@@ -495,7 +495,7 @@ jQuery( function( $ ) {
 				var this_page = window.location.toString();
 				this_page = this_page.replace( 'post-new.php?', 'post.php?post=' + woocommerce_admin_meta_boxes.post_id + '&action=edit&' );
 
-				$( '#variable_product_options' ).load( this_page + ' #variable_product_options_inner', function() {
+				$( '#variable_product_options' ).on( 'load', this_page + ' #variable_product_options_inner', function() {
 					$( '#variable_product_options' ).trigger( 'reload' );
 				} );
 			}
@@ -556,7 +556,7 @@ jQuery( function( $ ) {
 				}
 			});
 
-			file_path_field.val( file_path ).change();
+			file_path_field.val( file_path ).trigger( 'change' );
 		});
 
 		// Set post to 0 and set our custom type.
@@ -655,7 +655,7 @@ jQuery( function( $ ) {
 			ui.item.css( 'background-color', '#f6f6f6' );
 		},
 		stop: function( event, ui ) {
-			ui.item.removeAttr( 'style' );
+			ui.item[0].removeAttribute( 'style' );
 		},
 		update: function() {
 			var attachment_ids = '';
@@ -683,8 +683,8 @@ jQuery( function( $ ) {
 		$image_gallery_ids.val( attachment_ids );
 
 		// Remove any lingering tooltips.
-		$( '#tiptip_holder' ).removeAttr( 'style' );
-		$( '#tiptip_arrow' ).removeAttr( 'style' );
+		$( '#tiptip_holder' )[0].removeAttribute( 'style' );
+		$( '#tiptip_arrow' )[0].removeAttribute( 'style' );
 
 		return false;
 	});
