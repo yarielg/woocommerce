@@ -11,7 +11,7 @@
 		this.$form.find('.woocommerce-exporter-progress').val( 0 );
 
 		// Methods.
-		this.processStep = this.processStep.bind( this );
+		this.processStep = this.processStep.on( this );
 
 		// Events.
 		$form.on( 'submit', { productExportForm: this }, this.onSubmit );
@@ -93,7 +93,7 @@
 
 		if ( -1 !== $.inArray( 'variation', $( this ).val() ) ) {
 			exportCategory.closest( 'tr' ).hide();
-			exportCategory.val( '' ).change(); // Reset WooSelect selected value.
+			exportCategory.val( '' ).trigger( 'change' ); // Reset WooSelect selected value.
 		} else {
 			exportCategory.closest( 'tr' ).show();
 		}
