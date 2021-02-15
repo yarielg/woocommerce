@@ -55,14 +55,17 @@ The functions to access the core tests are:
   - `runOrderStatusFilterTest` - Merchant can filter orders by order status
   - `runOrderRefundTest` - Merchant can refund an order
   - `runOrderApplyCouponTest` - Merchant can apply a coupon to an order
+  - `runMerchantOrdersCustomerPaymentPage` - Merchant can visit the customer payment page
 
 ### Shopper
 
 - `runShopperTests` - Run all shopper tests
+  - `runCartApplyCouponsTest` - Shopper can use coupons on cart
   - `runCartPageTest` - Shopper can view and update cart
+  - `runCheckoutApplyCouponsTest` - Shopper can use coupons on checkout
   - `runCheckoutPageTest` - Shopper can complete checkout
   - `runMyAccountPageTest` - Shopper can access my account page
-  - `runSingleProductPageTest` - Shopper can view single product page
+  - `runSingleProductPageTest` - Shopper can view single product page in many variations (simple, variable, grouped)
 
 ## Contributing a new test
 
